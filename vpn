@@ -2,24 +2,24 @@
 
 _AutoComplete_VPN ()
 {
-	IFS=$'\n' tmp=( $(compgen -W "$(find /etc/openvpn/*.conf | sed 's#/etc/openvpn/##')" -- "${COMP_WORDS[$COMP_CWORD]}" ))
+  IFS=$'\n' tmp=( $(compgen -W "$(find /etc/openvpn/*.conf | sed 's#/etc/openvpn/##')" -- "${COMP_WORDS[$COMP_CWORD]}" ))
   COMPREPLY=( "${tmp[@]// /\ }" )
 }
 
 contains() {
-    local arr=$1;
-    local value=$2;
-    for val in $arr; do 
-				if [ "${val}" == "${value}" ]; then
-						echo "y"
-            return 0;
-        fi;
-    done;
-		return 1;
+  local arr=$1;
+  local value=$2;
+  for val in $arr; do 
+    if [ "${val}" == "${value}" ]; then
+      echo "y"
+      return 0;
+    fi;
+  done;
+  return 1;
 }
 
 if [ -n "$1" ] && [ $(contains "$(find /etc/openvpn/*.conf | sed 's#/etc/openvpn/##')" "$1") == "y" ]; then
-	sudo openvpn /etc/openvpn/"$1";
+  sudo openvpn /etc/openvpn/"$1";
 else
-	complete -o default -F _AutoComplete_VPN vpn 
+  complete -o default -F _AutoComplete_VPN vpn 
 fi
